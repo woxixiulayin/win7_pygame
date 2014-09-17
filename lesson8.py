@@ -1,35 +1,24 @@
 # -*- coding: utf-8 -*-
 __author__ = 'gang'
-
+import os
 import  pygame
 from pygame.locals import *
 from sys import exit
 
 
+pygame.init()
 fish_image = 'fish.jpg'
 back_ground_image = 'fish_background.jpg'
-plane_image = "plane.png"
+plane_image = 'plane.png'
 
-pygame.init()
-try:
-    screen = pygame.display.set_mode((640, 480), 0, 32)
-except pygame.error, e:
-    print "can't creat the display"
-    print e
-    exit()
-try:
-    fish = pygame.image.load(fish_image).convert()
-except pygame.error, e:
-    print "can't creat the display"
-    print e
-    exit()
+screen = pygame.display.set_mode((640, 480), 0, 32)
 
-back_ground = pygame.image.load(back_ground_image)
+
+back_ground = pygame.image.load(back_ground_image).convert()
 plane = pygame.image.load(plane_image).convert_alpha()
-
-font = pygame.font.SysFont("simhei", 50)
-text_surface = font.render(u"周星驰", True, (0, 100, 255))
-
+name = u"周星驰"
+font = pygame.font.SysFont("simsunnsimsun", 40)
+text_surface = font.render(name, True, (0,255,100),(100, 100, 100))
 clock =  pygame.time.Clock()
 
 move_setp_x, move_setp_y = 150, 150
@@ -43,7 +32,7 @@ while True:
             if event.key == K_ESCAPE:
                 exit()
     screen.blit(back_ground, (0, 0))
-#    screen.blit(text_surface, (x, 200))
+    screen.blit(text_surface, (x, 200))
     screen.blit(plane, (x, y))
     time_pass_second = clock.tick(30) / 1000.0
     x += move_setp_x * time_pass_second
