@@ -17,7 +17,7 @@ screen = pygame.display.set_mode((640, 480), 0, 32)
 back_ground = pygame.image.load(back_ground_image).convert()
 plane = pygame.image.load(plane_image).convert_alpha()
 name = u"周星驰"
-font = pygame.font.SysFont("simsunnsimsun", 40)
+font = pygame.font.Font("simkai.ttf", 40)
 text_surface = font.render(name, True, (0,255,100),(100, 100, 100))
 clock =  pygame.time.Clock()
 
