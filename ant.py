@@ -9,7 +9,7 @@ from random import randint, choice
 SCREENSIZE = (640, 480)
 NET_POSITION = (320, 240)
 NET_SIZE = 100
-ANT_COUNT = 10
+ANT_COUNT = 20
 
 class  State(object):
     def __init__(self, name):
@@ -29,6 +29,7 @@ class StateMachine(object):
         self.active_state = None
     def add_state(self, state):
         self.states[state.name] = state
+        print state.name
     def think(self):
         if self.active_state is None:
             return
@@ -115,11 +116,11 @@ class Ant(GameEntity):
         GameEntity.__init__(self, world, 'ant', image)
         explor_state = AntExplorState(self)
         seeking_state = AntSeekingState(self)
-        hunting_state = AntHuntingState(self)
+       # hunting_state = AntHuntingState(self)
         delivering_state = AntDeliveringState(self)
         self.brain.add_state(explor_state)
         self.brain.add_state(seeking_state)
-        self.brain.add_state(hunting_state)
+      #  self.brain.add_state(hunting_state)
         self.brain.add_state(delivering_state)
         self.carryimage = None
     def carry(self, image):
@@ -185,10 +186,8 @@ class AntSeekingState(State):
             self.ant.speed = 160. + randint(-20, 20)
 
 class AntDeliveringState(State):
-    def __int__(self, ant):
-        #设置状态名字
-        State.__init__(self,"delivering")
-        #设置状态的实体
+    def __init__(self, ant):
+        State.__init__(self, 'delivering')
         self.ant = ant
     def check_conditions(self):
         if self.ant.location.get_distance_to(Vector2(*NET_POSITION)) < NET_SIZE:
@@ -197,8 +196,8 @@ class AntDeliveringState(State):
                 return 'exploring'
         return None
     def entry_action(self):
-        random_offset = Vector2(randint(-20, 20), Vector2(randint(-20, 20)))
-        self.ant.destination = Vector2(*NET_SIZE) + random_offset
+        random_offset = Vector2(randint(-20, 20),randint(-20, 20))
+        self.ant.destination = Vector2(*NET_POSITION) + random_offset
 
 class AntHuntingState(State):
     pass
@@ -231,7 +230,7 @@ def run():
                 if event.key == K_ESCAPE:
                     exit()
 
-        time_passed = clock.tick(30)
+        time_passed = clock.tick(30)/1000.0
 
 
    #screen.fill((0,255,0))
@@ -239,7 +238,7 @@ def run():
         if randint(0, 20) == 1:
             leaf = Leaf(world, leaf_image)
             leaf.location = Vector2(randint(0, w), randint(0 , h))
-           # world.add_entity(leaf)
+            world.add_entity(leaf)
 
         world.process(time_passed)
         world.render(screen)
